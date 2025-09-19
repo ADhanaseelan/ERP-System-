@@ -67,3 +67,4 @@ export default defineConfig([
   },
 ])
 ```
+// npm install tailwindcss @tailwindcss/vite
