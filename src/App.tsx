@@ -4,10 +4,8 @@ import {
   Routes,
   Route,
   Navigate,
-  useNavigate,
 } from "react-router-dom";
 import LoginPage from "./components/login/login";
-import RoleSelection from "./components/login/RoleSelection";
 import AdminDashboard from "./components/Admin/Dashboard";
 import StudentDashboard from "./components/student/StudentDashboard";
 
@@ -22,33 +20,20 @@ const App: React.FC = () => {
       <Routes>
         {/* Default route: redirect to login */}
         <Route path="/" element={<Navigate to="/login" replace />} />
+
         {/* Login route */}
         <Route
           path="/login"
           element={
             <LoginPage
-              onLogin={() => {
+              onLogin={(userRole: Role) => {
                 setIsAuthenticated(true);
+                setRole(userRole);
               }}
             />
           }
         />
-        {/* Role selection route */}
-        <Route
-          path="/role"
-          element={
-            isAuthenticated ? (
-              <RoleSelection
-                onSelectRole={(selectedRole: Role) => {
-                  setRole(selectedRole);
-                }}
-                // Navigation handled in RoleSelection
-              />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
+
         {/* Student dashboard route */}
         <Route
           path="/student"
@@ -60,17 +45,19 @@ const App: React.FC = () => {
             )
           }
         />
+
         {/* Admin dashboard route */}
         <Route
           path="/admin"
-          element={
-            isAuthenticated && role === "admin" ? (
+          element=
+            {isAuthenticated && role === "admin" ? (
               <AdminDashboard />
             ) : (
               <Navigate to="/login" replace />
             )
           }
         />
+
         {/* Catch-all: redirect to login */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
